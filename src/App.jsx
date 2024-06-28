@@ -82,6 +82,7 @@ const App = () => {
               numberOfQuestions={numberOfQuestions}
               points={points}
               maxPoints={maxPoints}
+              answer={answer}
             />
             <Question
               question={questions[cursor]}
