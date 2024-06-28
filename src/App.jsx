@@ -3,6 +3,7 @@ import Error from "./components/Error";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import Main from "./components/Main";
+import NextButton from "./components/NextButton";
 import Question from "./components/Question";
 import StartScreen from "./components/StartScreen";
 
@@ -24,7 +25,7 @@ const reducer = (state, action) => {
     case "start":
       return { ...state, status: "active" };
     case "newAnswer":
-      const currentQuestion = state.questions.at(state.index);
+      const currentQuestion = state.questions.at(state.cursor);
 
       return {
         ...state,
@@ -34,6 +35,9 @@ const reducer = (state, action) => {
             ? state.points + currentQuestion.points
             : state.points,
       };
+    case "nextQuestion":
+      return { ...state, cursor: state.cursor + 1, answer: null };
+
     default:
       throw new Error("Action Unknown");
   }
@@ -67,11 +71,14 @@ const App = () => {
           />
         )}
         {status === "active" && (
-          <Question
-            question={questions[cursor]}
-            dispatch={dispatch}
-            answer={answer}
-          />
+          <>
+            <Question
+              question={questions[cursor]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
+          </>
         )}
       </Main>
     </div>
