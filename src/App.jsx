@@ -1,14 +1,18 @@
 import React, { useEffect, useReducer } from "react";
-import Error from "./Error";
-import Header from "./Header";
-import Loader from "./Loader";
-import Main from "./Main";
-import StartScreen from "./StartScreen";
+import Error from "./components/Error";
+import Header from "./components/Header";
+import Loader from "./components/Loader";
+import Main from "./components/Main";
+import Question from "./components/Question";
+import StartScreen from "./components/StartScreen";
 
 const initialState = {
   questions: [],
   // loading, error, ready, active, finished
   status: "loading",
+  cursor: 0,
+  answer: null,
+  points: 0,
 };
 
 const reducer = (state, action) => {
@@ -17,13 +21,29 @@ const reducer = (state, action) => {
       return { ...state, questions: action.payload, status: "ready" };
     case "dataFailed":
       return { ...state, status: "error" };
+    case "start":
+      return { ...state, status: "active" };
+    case "newAnswer":
+      const currentQuestion = state.questions.at(state.index);
+
+      return {
+        ...state,
+        answer: action.payload,
+        points:
+          action.payload === currentQuestion.correctOption
+            ? state.points + currentQuestion.points
+            : state.points,
+      };
     default:
-      throw new Error("Actionunknown");
+      throw new Error("Action Unknown");
   }
 };
 
 const App = () => {
-  const [{ questions, status }, dispatch] = useReducer(reducer, initialState);
+  const [{ questions, status, cursor, answer }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   const numberOfQuestions = questions.length;
 
@@ -41,7 +61,17 @@ const App = () => {
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
         {status === "ready" && (
-          <StartScreen numberOfQuestions={numberOfQuestions} />
+          <StartScreen
+            numberOfQuestions={numberOfQuestions}
+            dispatch={dispatch}
+          />
+        )}
+        {status === "active" && (
+          <Question
+            question={questions[cursor]}
+            dispatch={dispatch}
+            answer={answer}
+          />
         )}
       </Main>
     </div>
