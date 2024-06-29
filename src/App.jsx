@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import Error from "./components/Error";
+import FinishScreen from "./components/FinishScreen";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import Main from "./components/Main";
@@ -15,6 +16,7 @@ const initialState = {
   cursor: 0,
   answer: null,
   points: 0,
+  highscore: 0,
 };
 
 const reducer = (state, action) => {
@@ -38,17 +40,23 @@ const reducer = (state, action) => {
       };
     case "nextQuestion":
       return { ...state, cursor: state.cursor + 1, answer: null };
-
+    case "finish":
+      return {
+        ...state,
+        status: "finished",
+        highscore:
+          state.points > state.highscore ? state.points : state.highscore,
+      };
+    case "restart":
+      return { ...initialState, questions: state.questions, status: "ready" };
     default:
       throw new Error("Action Unknown");
   }
 };
 
 const App = () => {
-  const [{ questions, status, cursor, answer, points }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [{ questions, status, cursor, answer, points, highscore }, dispatch] =
+    useReducer(reducer, initialState);
 
   const numberOfQuestions = questions.length;
   const maxPoints = questions.reduce(
@@ -89,8 +97,21 @@ const App = () => {
               dispatch={dispatch}
               answer={answer}
             />
-            <NextButton dispatch={dispatch} answer={answer} />
+            <NextButton
+              dispatch={dispatch}
+              answer={answer}
+              numberOfQuestions={numberOfQuestions}
+              cursor={cursor}
+            />
           </>
+        )}
+        {status === "finished" && (
+          <FinishScreen
+            maxPoints={maxPoints}
+            points={points}
+            highscore={highscore}
+            dispatch={dispatch}
+          />
         )}
       </Main>
     </div>
