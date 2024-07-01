@@ -1,4 +1,6 @@
 # React Quiz App
+![Screenshot 2024-07-01 at 3 29 04 PM (2)](https://github.com/KateM3d/quiz/assets/78667247/32aa4b6e-7f6d-403e-b797-fc7c254b1d89)
+![Screenshot 2024-07-01 at 3 29 55 PM (2)](https://github.com/KateM3d/quiz/assets/78667247/7d256db1-a29d-4353-82f1-f32a6f324b6f)
 
 This is a React-based quiz application that fetches questions from a Flask backend API. The quiz covers various geography-related questions and provides a fun and interactive way to test your knowledge.
 
