@@ -83,7 +83,7 @@ const App = () => {
   );
 
   useEffect(() => {
-    fetch("http://localhost:8000/questions")
+    fetch("https://flask-app-ikar.onrender.com/questions")
       .then((res) => res.json())
       .then((data) => dispatch({ type: "dataReceived", payload: data }))
       .catch((err) => dispatch({ type: "dataFailed" }));
