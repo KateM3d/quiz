@@ -1,3 +1,22 @@
+# React Quiz App
+
+This is a React-based quiz application that fetches questions from a Flask backend API. The quiz covers various geography-related questions and provides a fun and interactive way to test your knowledge.
+
+## Features
+
+- **Dynamic Quiz:** Fetches questions from a backend API.
+- **Timer:** Each question is timed to add a layer of challenge.
+- **Scoring:** Scores are calculated based on correct answers and points assigned to each question.
+- **Highscore Tracking:** Keeps track of the highest score achieved.
+- **Progress Indicator:** Shows progress through the quiz.
+- **Responsive Design:** Works well on both desktop and mobile devices.
+
+## Technologies Used
+
+### Frontend
+
+- React
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
