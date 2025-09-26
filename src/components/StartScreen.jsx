@@ -3,13 +3,16 @@ import React from "react";
 const StartScreen = ({ numberOfQuestions, dispatch }) => {
   return (
     <div className="start">
-      <h2>Welcome to The Quiz Please!</h2>
-      <h3>{numberOfQuestions} questions to test your travel knowledge</h3>
+      <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎯</div>
+      <h2>Welcome to Quiz Master!</h2>
+      <h3>
+        Test your knowledge with {numberOfQuestions} challenging questions
+      </h3>
       <button
         className="btn btn-ui"
         onClick={() => dispatch({ type: "start" })}
       >
-        Let's start
+        🚀 Start Quiz
       </button>
     </div>
   );

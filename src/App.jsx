@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import Error from "./components/Error";
+import FinishScreen from "./components/FinishScreen";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
 import Main from "./components/Main";
@@ -37,7 +38,15 @@ const reducer = (state, action) => {
             : state.points,
       };
     case "nextQuestion":
-      return { ...state, cursor: state.cursor + 1, answer: null };
+      const nextCursor = state.cursor + 1;
+      return {
+        ...state,
+        cursor: nextCursor,
+        answer: null,
+        status: nextCursor >= state.questions.length ? "finished" : "active",
+      };
+    case "restart":
+      return { ...state, status: "ready", cursor: 0, answer: null, points: 0 };
 
     default:
       throw new Error("Action Unknown");
@@ -57,9 +66,11 @@ const App = () => {
   );
 
   useEffect(() => {
-    fetch("http://localhost:8000/questions")
+    fetch("/data/questions.json")
       .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataReceived", payload: data }))
+      .then((data) =>
+        dispatch({ type: "dataReceived", payload: data.questions })
+      )
       .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
   return (
@@ -91,6 +102,13 @@ const App = () => {
             />
             <NextButton dispatch={dispatch} answer={answer} />
           </>
+        )}
+        {status === "finished" && (
+          <FinishScreen
+            points={points}
+            maxPoints={maxPoints}
+            dispatch={dispatch}
+          />
         )}
       </Main>
     </div>
